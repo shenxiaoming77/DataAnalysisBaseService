@@ -1,1 +1,1 @@
-# DataAnalysisBaseService
+个人的数据分析服务service包，目前主要是集成了用于oracle，hbase以及基于FNLP平台的分词 实体名词提取等接口，应用于线上推荐系统
