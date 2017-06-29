@@ -1,0 +1,212 @@
+<?xml version="1.0"?>
+<project name="DataAnalysisBaseService" default="build-DataAnalysisBaseService-jar" basedir=".">
+	<property name="build" value="build" />
+	<property name="dist" value="dist" />
+	<property name="src" value="src" />
+	<property name="test" value="test" />
+	<property name="war-config" value="resources" />
+	<property name="war-dev-config" value="env/dev" />
+	<property name="war-test-config" value="env/test_sr" />
+	<property name="war-te-config" value="env/TextEngine" />
+	<property name="jar-zbcm-test-config" value="env/test"  />
+	<property name="jar-zbcm-product-config" value="env/product" />
+	<property name="war-product-config" value="env/product" />
+	<property name="war-product-sr-config-in" value="env/product_sr_in" />
+	<property name="war-product-sr-config" value="env/product_sr" />
+	<property name="lib" value="WebRoot/WEB-INF/lib" />
+	<property name="web-class" value="WebRoot/WEB-INF/classes" />
+	<property name="bin-class" value="bin" />
+	<property name="web" value="WebRoot" />
+	<property name="context-path" value="${ant.project.name}" />
+	<property name="context-path-sr" value="${ant.project.name}_sr" />
+	<property name="context-path-src" value="${ant.project.name}_src" />
+	<property file="build.properties" />
+
+	<target name="clean">
+		<echo message="Cleaning up the build and dist directories" />
+		<delete dir="${build}" />
+		<mkdir dir="${build}" />
+
+	</target>
+
+	<target name="create-war">
+		<mkdir dir="${build}/${context-path}" />
+		<copy todir="${build}/${context-path}">
+			<fileset dir="${web}">
+				<include name="**/*.*" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="create-war-sr">
+		<mkdir dir="${build}/${context-path-sr}" />
+		<copy todir="${build}/${context-path-sr}">
+			<fileset dir="${web}">
+				<include name="**/*.*" />
+			</fileset>
+		</copy>
+	</target>
+
+	<!-- dataStore product sr configure -->
+	<target name="copy-resources-product-sr">
+		<copy todir="${build}/${context-path-sr}/WEB-INF/classes" overwrite="true">
+			<fileset dir="${war-product-sr-config}">
+				<include name="**" />
+			</fileset>
+		</copy>
+	</target>
+
+	<!-- dataStore product sr configure -->
+	<target name="copy-resources-product-sr-in">
+		<copy todir="${build}/${context-path-sr}/WEB-INF/classes" overwrite="true">
+			<fileset dir="${war-product-sr-config-in}">
+				<include name="**" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="copy-resources-test-sr">
+		<copy todir="${build}/${context-path-sr}/WEB-INF/classes" overwrite="true">
+			<fileset dir="${war-test-config}">
+				<include name="**" />
+			</fileset>
+		</copy>
+	</target>
+
+	<!--发布生产环境SR同步服务-->
+	<target name="deploy-dataStore-product-sr" description="deploy dataStore sr service...">
+		<echo message="start deploy dataStore sr service..." />
+		<antcall target="clean" />
+		<antcall target="create-war-sr" />
+		<antcall target="copy-resources-product-sr" />
+	</target>
+
+	<!--发布内网生产环境SR同步服务-->
+	<target name="deploy-dataStore-product-sr-in" description="deploy dataStore sr service...">
+		<echo message="start deploy dataStore sr service..." />
+		<antcall target="clean" />
+		<antcall target="create-war-sr" />
+		<antcall target="copy-resources-product-sr-in" />
+	</target>
+
+	<!--发布集成测试环境服务-->
+	<target name="deploy-dataStore-test-sr" description="deploy test dataStore sr service...">
+		<echo message="deploy test dataStore sr service..." />
+		<antcall target="clean" />
+		<antcall target="create-war-sr" />
+		<antcall target="copy-resources-test-sr" />
+	</target>
+
+	<!--sr M/R 程序 jar包build begin-->
+	<target name="create-src-sr">
+		<mkdir dir="${build}/${context-path-sr}" />
+		<copy todir="${build}/${context-path-sr}">
+			<fileset dir="${web-class}">
+				<include name="**/*.*" />
+			</fileset>
+		</copy>
+	</target>
+	
+	<target name="create-DataAnalysisBaseService-src">
+		<mkdir dir="${build}/${context-path-src}" />
+		<copy todir="${build}/${context-path-src}">
+			<fileset dir="${bin-class}">
+				<include name="**" />
+			</fileset>
+		</copy>
+	</target>
+
+
+	<target name="copy-resources-product-jar-sr-in">
+		<copy todir="${build}/${context-path-sr}" overwrite="true">
+			<fileset dir="${war-product-sr-config-in}">
+				<include name="**" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="copy-resources-product-jar-sr">
+		<copy todir="${build}/${context-path-sr}" overwrite="true">
+			<fileset dir="${war-product-sr-config}">
+				<include name="**" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="copy-resources-product-jar-sr-test">
+		<copy todir="${build}/${context-path-sr}" overwrite="true">
+			<fileset dir="${war-test-config}">
+				<include name="**" />
+			</fileset>
+		</copy>
+	</target>
+	
+	<!-- 设置TE客户端配置文件路径 -->
+	<target name="copy-resources-product-jar-sr-TextEngine">
+			<copy todir="${build}/${context-path-sr}" overwrite="true">
+				<fileset dir="${war-te-config}">
+					<include name="**" />
+				</fileset>
+			</copy>
+	</target>
+	
+	<!-- 设置zbcm 测试环境配置文件路径 -->
+		<target name="copy-resources-test-jar-sr-ZBCM">
+				<copy todir="${build}/${context-path-src}" overwrite="true">
+					<fileset dir="${jar-zbcm-test-config}">
+						<include name="**" />
+					</fileset>
+				</copy>
+		</target>
+	
+	<!-- 设置zbcm 生产环境配置文件路径 -->
+			<target name="copy-resources-product-jar-sr-ZBCM">
+					<copy todir="${build}/${context-path-src}" overwrite="true">
+						<fileset dir="${jar-zbcm-product-config}">
+							<include name="**" />
+						</fileset>
+					</copy>
+			</target>
+
+	<target name="build-jar">
+		<jar jarfile="${build}/idc-dataStore.jar" basedir="${build}/${context-path-sr}">
+			<include name="**/*.*" />
+		</jar>
+	</target>
+
+	<target name="build-clientjar">
+		<jar jarfile="${build}/iwmdata_dataStore_client_v1.5.jar" basedir="${build}/${context-path-sr}">
+			<include name="com/**/*.*" />
+			<include name="configure/**/*.*" />
+		</jar>
+	</target>
+	
+	<!--发布TextEngine客户端JAR包-->
+	<target name="build-te-clientjar">
+			<jar jarfile="${build}/iwmdata_dataStore_client_v1.5.jar" basedir="${build}/${context-path-sr}">
+				<include name="com/**/*.*" />
+				<include name="configure/**/*.*" />
+			</jar>
+		</target>
+	
+
+	
+	<!--发布ZBCM 生产环境JAR包-->
+			<target name="build-zbcm-DataAnalysisBaseService-product-jar">
+					<jar jarfile="${build}/DataAnalysisBaseService.jar" basedir="${build}/${context-path-src}">
+						<include name="com/**/*.*" />
+						<include name="configure/**/*.*" />
+					</jar>
+				</target>
+
+
+	<!--发布ZBCM线上环境JAR包-->
+			<target name="build-DataAnalysisBaseService-jar" description="deploy ZBCM  dataStore  service...">
+					<echo message="build Data Analysis Base Service jar..." />
+					<antcall target="clean" />
+					<antcall target="create-DataAnalysisBaseService-src" />
+					<antcall target="build-zbcm-DataAnalysisBaseService-product-jar" />
+			</target>
+	
+</project>
+
